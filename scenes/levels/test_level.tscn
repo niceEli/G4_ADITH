@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=4 uid="uid://mu0xk8iw44ty"]
+
+[ext_resource type="PackedScene" uid="uid://djxlx5ql0nmvt" path="res://scenes/actors/Player.tscn" id="1_lnpp3"]
+[ext_resource type="Texture2D" uid="uid://q6l3qdg8balx" path="res://icon.svg" id="2_cuic6"]
+[ext_resource type="PackedScene" uid="uid://t83eun0dt5nc" path="res://scenes/actors/game_camera.tscn" id="2_orlyt"]
+[ext_resource type="PackedScene" uid="uid://d21q6lyy4bdbo" path="res://scenes/actors/phantom_camera.tscn" id="3_r8agg"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2ep5x"]
+texture = ExtResource("2_cuic6")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-42.6667, -64, -64, -42.6667, -64, 42.6667, -42.6667, 64, 42.6667, 64, 64, 42.6667, 64, -42.6667, 42.6667, -64)
+
+[sub_resource type="TileSet" id="TileSet_fdint"]
+tile_size = Vector2i(128, 128)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_2ep5x")
+
+[sub_resource type="LabelSettings" id="LabelSettings_w6t84"]
+font_size = 200
+
+[sub_resource type="Curve2D" id="Curve2D_ev0w7"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 436, 314, -209.147, 37.7976, 209.147, -37.7976, 1229, 314, -153.71, -5.03968, 153.71, 5.03968, 1631, 207, 0, 0, 0, 0, 1888, 280, -221.746, 45.3572, 221.746, -45.3572, 2193, 311, -148.671, -2.51984, 148.671, 2.51984, 2629, 143, -47.5683, -126.056, 47.5683, 126.056, 2860, 281, -168.829, 83.1548, 168.829, -83.1548, 3085, 429, -156.23, -110.873, 156.23, 110.873, 3684, 424)
+}
+point_count = 9
+
+[node name="TestLevel" type="Node2D"]
+
+[node name="Tmap" type="Node2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Tmap"]
+tile_map_data = PackedByteArray("AAAAAAQAAAAAAAAAAAABAAQAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAAAAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAAAAAAAAAAKAAQAAAAAAAAAAAALAAQAAAAAAAAAAAALAAMAAAAAAAAAAAAOAAQAAAAAAAAAAAAPAAQAAAAAAAAAAAAQAAQAAAAAAAAAAAARAAMAAAAAAAAAAAARAAQAAAAAAAAAAAAVAAIAAAAAAAAAAAAUAAIAAAAAAAAAAAAXAAQAAAAAAAAAAAAYAAQAAAAAAAAAAAAOAAMAAAAAAAAAAAAcAAQAAAAAAAAAAAAdAAQAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_fdint")
+
+[node name="Label" type="Label" parent="Tmap/TileMapLayer"]
+offset_left = 3406.0
+offset_top = 68.0
+offset_right = 4197.0
+offset_bottom = 341.0
+text = "Yuo Win"
+label_settings = SubResource("LabelSettings_w6t84")
+
+[node name="GameCamera" parent="." instance=ExtResource("2_orlyt")]
+physics_interpolation_mode = 1
+position = Vector2(568.909, 321.198)
+
+[node name="PhantomCamera" parent="." node_paths=PackedStringArray("follow_target", "follow_path") instance=ExtResource("3_r8agg")]
+follow_target = NodePath("../Player")
+follow_path = NodePath("../Path2D")
+
+[node name="Player" parent="." instance=ExtResource("1_lnpp3")]
+position = Vector2(570, 298)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_ev0w7")
