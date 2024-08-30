@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export_group("Components")
 
 @export_group("Settings")
-@export var JUMP_VELOCITY: float = 500
+@export var JUMP_VELOCITY: float = 550
 @export var SPEED: float = 500
 
 # Called when the node enters the scene tree for the first time.
