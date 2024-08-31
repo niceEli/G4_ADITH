@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://b3rpa3v1ubx4y"]
+
+[ext_resource type="Script" path="res://scripts/brick_block.gd" id="1_13dpl"]
+[ext_resource type="Texture2D" uid="uid://c2t8rncgaabsq" path="res://assets/kenney/Pixel Platformer/Tiles/tile_0026.png" id="2_mhlpo"]
+[ext_resource type="PackedScene" uid="uid://cpm1kfxa1k8vq" path="res://scenes/components/breakable_comp.tscn" id="4_gstu2"]
+[ext_resource type="PackedScene" uid="uid://ds5gu14sqd7r5" path="res://scenes/components/hittable_comp.tscn" id="5_wjbkg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n38ky"]
+size = Vector2(64, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3rx4"]
+size = Vector2(72, 68)
+
+[node name="BrickBlock" type="AnimatableBody2D" node_paths=PackedStringArray("br_comp")]
+script = ExtResource("1_13dpl")
+br_comp = NodePath("BreakableComp")
+
+[node name="Image" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("2_mhlpo")
+
+[node name="HittableComp" parent="." instance=ExtResource("5_wjbkg")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HittableComp"]
+position = Vector2(0, 40)
+shape = SubResource("RectangleShape2D_n38ky")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_b3rx4")
+
+[node name="BreakableComp" parent="." instance=ExtResource("4_gstu2")]
+position = Vector2(298.604, 449.245)
+
+[connection signal="body_shape_entered" from="HittableComp" to="." method="_on_hittable_comp_body_shape_entered"]

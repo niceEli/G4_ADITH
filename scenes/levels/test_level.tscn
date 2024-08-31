@@ -1,9 +1,12 @@
-[gd_scene load_steps=8 format=4 uid="uid://mu0xk8iw44ty"]
+[gd_scene load_steps=13 format=4 uid="uid://mu0xk8iw44ty"]
 
 [ext_resource type="Texture2D" uid="uid://c8vms50b0r8f" path="res://assets/kenney/Pixel Platformer/Tilemap/tilemap_packed.png" id="1_cy6oe"]
 [ext_resource type="PackedScene" uid="uid://djxlx5ql0nmvt" path="res://scenes/actors/Player.tscn" id="1_lnpp3"]
+[ext_resource type="PackedScene" uid="uid://b3rpa3v1ubx4y" path="res://scenes/actors/brick_block.tscn" id="2_o4tot"]
 [ext_resource type="PackedScene" uid="uid://t83eun0dt5nc" path="res://scenes/actors/game_camera.tscn" id="2_orlyt"]
 [ext_resource type="PackedScene" uid="uid://d21q6lyy4bdbo" path="res://scenes/actors/phantom_camera.tscn" id="3_r8agg"]
+[ext_resource type="PackedScene" uid="uid://xusprehk6hu8" path="res://scenes/actors/question_block.tscn" id="5_hvdow"]
+[ext_resource type="PackedScene" uid="uid://bx4osd4oqsf6j" path="res://scenes/actors/death_zone.tscn" id="6_5ayh4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gtp46"]
 texture = ExtResource("1_cy6oe")
@@ -270,16 +273,24 @@ tile_size = Vector2i(18, 18)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_gtp46")
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_e1j6r"]
+scenes/1/scene = ExtResource("2_o4tot")
+scenes/2/scene = ExtResource("5_hvdow")
+
+[sub_resource type="TileSet" id="TileSet_0eg46"]
+tile_size = Vector2i(72, 72)
+sources/0 = SubResource("TileSetScenesCollectionSource_e1j6r")
+
 [sub_resource type="Curve2D" id="Curve2D_ev0w7"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 571, 535, -106.908, -1.7818, 106.908, 1.7818, 1035, 339, -80.1809, 19.5998, 80.1809, -19.5998, 1318, 346, 55.2357, 80.1809, -55.2357, -80.1809, 1532, 179, 67.7083, 48.1085, -67.7083, -48.1085, 1238, 152, -69.4901, -5.34539, 69.4901, 5.34539, 1211, -279, 0, 0, 0, 0, 1330, -269, 30.2906, 7.12719, -30.2906, -7.12719, 1332, -627, 0, 0, 0, 0, 1117, -616, 149.68, -50.4538, -149.68, 50.4538, 807, -585, 195.088, -79.0443, -195.088, 79.0443, 473, -391, 87.4532, 5.04538, -87.4532, -5.04538, 254, -391, 231.761, 1.5874, -231.761, -1.5874, -335, -390, 0, 0, 0, 0, -755, -463)
+"points": PackedVector2Array(0, 0, 0, 0, 540, 396, -106.908, -1.7818, 106.908, 1.7818, 1035, 339, -80.1809, 19.5998, 80.1809, -19.5998, 1318, 346, 55.2357, 80.1809, -55.2357, -80.1809, 1532, 179, 67.7083, 48.1085, -67.7083, -48.1085, 1238, 152, -69.4901, -5.34539, 69.4901, 5.34539, 1211, -279, 0, 0, 0, 0, 1330, -269, 30.2906, 7.12719, -30.2906, -7.12719, 1332, -627, 0, 0, 0, 0, 1117, -616, 149.68, -50.4538, -149.68, 50.4538, 807, -585, 195.088, -79.0443, -195.088, 79.0443, 473, -391, 87.4532, 5.04538, -87.4532, -5.04538, 254, -391, 231.761, 1.5874, -231.761, -1.5874, -335, -390, 0, 0, 0, 0, -755, -463)
 }
 point_count = 14
 
 [node name="TestLevel" type="Node2D"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -1687.0
+offset_left = -1586.0
 offset_top = -1383.0
 offset_right = 2273.0
 offset_bottom = 1265.0
@@ -287,24 +298,32 @@ color = Color(0, 0.847059, 1, 1)
 
 [node name="Tmap" type="Node2D" parent="."]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="Tmap"]
+[node name="BGL" type="TileMapLayer" parent="Tmap"]
 scale = Vector2(4, 4)
 tile_map_data = PackedByteArray("AAAGAAgAAAACAAAAAAAHAAgAAAACAAAAAAAIAAgAAAACAAAAAAAJAAgAAAACAAAAAAAKAAgAAAACAAAAAAAEAAgAAAACAAAAAAAFAAgAAAACAAAAAAADAAgAAAABAAAAAAALAAgAAAADAAAAAAAOAAYAAAABAAEAAAAPAAYAAAACAAEAAAAQAAYAAAACAAEAAAARAAYAAAACAAEAAAARAAcAAAACAAYAAAARAAgAAAACAAcAAAAOAAcAAAABAAYAAAAOAAgAAAABAAcAAAAPAAcAAAAEAAUAAAAPAAgAAAACAAcAAAAQAAcAAAAEAAUAAAAQAAgAAAACAAcAAAALAAcAAAAAAAEAAAASAAYAAAADAAEAAAASAAcAAAADAAYAAAASAAgAAAADAAcAAAAUAAUAAAAIAAIAAAAVAAUAAAAJAAIAAAAWAAUAAAAKAAIAAAAQAAMAAAAIAAIAAAARAAMAAAAJAAIAAAASAAMAAAAKAAIAAAAVAAQAAAAHAAIAAAAQAAEAAAAGAAcAAAAQAP//AAAGAAcAAAAQAP3/AAAHAAcAAAARAP3/AAAHAAcAAAASAP3/AAAHAAcAAAASAPz/AAALAAMAAAASAPv/AAALAAMAAAASAPr/AAALAAMAAAASAPn/AAALAAMAAAASAPj/AAALAAIAAAARAPj/AAAGAAcAAAAQAPj/AAAGAAcAAAAPAPj/AAAGAAcAAAAHAPv/AAADAAMAAAAGAPv/AAACAAMAAAAGAPz/AAAEAAUAAAAHAPz/AAADAAYAAAAGAP3/AAACAAYAAAAHAP3/AAADAAYAAAAHAP7/AAADAAcAAAADAPv/AAACAAMAAAABAPv/AAABAAMAAAABAPz/AAABAAYAAAABAP3/AAABAAcAAAACAPv/AAACAAMAAAACAPz/AAAEAAUAAAACAP3/AAAFAAAAAAACAP7/AAABAAcAAAADAPz/AAACAAYAAAADAP3/AAACAAYAAAADAP7/AAACAAcAAAAEAPr/AAAEAAQAAAAEAPv/AAACAAMAAAAEAPz/AAACAAYAAAAEAP3/AAAEAAUAAAAEAP7/AAACAAcAAAAFAPv/AAACAAMAAAAFAPz/AAAEAAUAAAAFAP3/AAACAAYAAAAFAP7/AAACAAcAAAAGAP7/AAACAAcAAAAPAPf/AAAHAAQAAAAAAPv/AAAGAAcAAAD9//v/AAAGAAcAAAD6//v/AAAGAAcAAAD0//r/AAABAAUAAAD0//v/AAABAAcAAAD1//j/AAAKAAUAAAD1//n/AAAKAAYAAAD1//r/AAACAAUAAAD1//v/AAACAAcAAAD2//r/AAADAAUAAAD2//v/AAADAAcAAAA=")
 tile_set = SubResource("TileSet_7ygg7")
 
+[node name="BLOCKS" type="TileMapLayer" parent="Tmap"]
+tile_map_data = PackedByteArray("AAADAAUAAAAAAAAAAgAGAAUAAAAAAAAAAgAIAAUAAAAAAAAAAgAFAAUAAAAAAAAAAQAHAAUAAAAAAAAAAQAJAAUAAAAAAAAAAQAHAAIAAAAAAAAAAgABAPj/AAAAAAAAAQACAPj/AAAAAAAAAgADAPj/AAAAAAAAAQA=")
+tile_set = SubResource("TileSet_0eg46")
+
 [node name="GameCamera" parent="." instance=ExtResource("2_orlyt")]
 physics_interpolation_mode = 1
-position = Vector2(571, 535)
+position = Vector2(540, 396)
 
 [node name="PhantomCamera" parent="." node_paths=PackedStringArray("follow_target", "follow_path") instance=ExtResource("3_r8agg")]
-position = Vector2(571, 535)
+position = Vector2(540, 396)
 follow_target = NodePath("../Player")
 follow_path = NodePath("../Path2D")
 follow_damping_value = Vector2(0.3, 0.3)
 show_viewfinder_in_play = false
+draw_limits = true
 
 [node name="Player" parent="." instance=ExtResource("1_lnpp3")]
-position = Vector2(568, 544)
+position = Vector2(324, 540)
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_ev0w7")
+
+[node name="DeathZone" parent="." instance=ExtResource("6_5ayh4")]
+position = Vector2(545, 859)

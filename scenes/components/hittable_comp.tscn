@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://ds5gu14sqd7r5"]
+
+[node name="HittableComp" type="Area2D"]
