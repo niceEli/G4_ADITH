@@ -1,46 +1,52 @@
-# Simple workflow for deploying static content to GitHub Pages
+# https://gist.github.com/yet-another-lucas/c1dd9ecf11552cd7d3c6f66ef474eaf3
+
 name: Deploy static content to Pages
 
+env:
+  GODOT_VERSION: 4.3.0
+  
+# Controls when the workflow will run
 on:
-  # Runs on pushes targeting the default branch
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: ["main"]
+    branches: [ PROD ]
+  pull_request:
+    branches: [ PROD ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  export-web:
+    name: Web Export
     runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3-stable
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build Godot project
-        uses: manleydev/build-godot-action@v1.5.0
+        uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: Web Build
+        run: |
+          mkdir -v -p build/web
+          godot -v --export "HTML5" ./build/web/index.html
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
         with:
-          name: G4_ADITH
-          preset: HTML5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+          name: web
+          path: build/web
+      # Installing rsync is needed in order to deploy to GitHub Pages. Without it, the build will fail.
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          # Upload entire repository
-          path: './build'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: main # The branch the action should deploy to.
+          FOLDER: build/web # The folder the action should deploy.
+
