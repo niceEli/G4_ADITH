@@ -1,6 +1,8 @@
-extends CharacterBody2D
+extends Node2D
 
 @export_group("Components")
+@export var p: Player
+@export var sprite: Sprite2D
 
 @export_group("Settings")
 @export var JUMP_VELOCITY: float = 550
@@ -14,8 +16,6 @@ extends CharacterBody2D
 @export_range(0.00,1.00) var QUEUE_TIME: float = 0.16
 @export_range(0.00,1.00) var COYOTE_TIME: float = 0.16
 
-@export var sprite: Sprite2D
-
 @export var flipdefault: bool = true
 
 var can_jump: bool = false
@@ -24,11 +24,11 @@ var ct: float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta: float) -> void:
+func _on_player_state_default_physics_process(delta: float, just_dashed: bool) -> void:
 	jq -= delta
 	ct -= delta
 	
@@ -37,12 +37,13 @@ func _physics_process(delta: float) -> void:
 	if ct <= 0:
 		ct = 0
 	
-	if Input.is_action_pressed("move_jump"):
-		velocity.y += ProjectSettings.get_setting("physics/2d/default_gravity") * delta
-	else:
-		velocity.y += ProjectSettings.get_setting("physics/2d/default_gravity") * 3 * delta
+	if not just_dashed:
+		if Input.is_action_pressed("move_jump"):
+			p.velocity.y += ProjectSettings.get_setting("physics/2d/default_gravity") * delta
+		else:
+			p.velocity.y += ProjectSettings.get_setting("physics/2d/default_gravity") * 3 * delta
 	
-	if is_on_floor():
+	if p.is_on_floor():
 		ct = COYOTE_TIME
 	
 	if Input.is_action_just_pressed("move_jump"):
@@ -53,21 +54,22 @@ func _physics_process(delta: float) -> void:
 	if can_jump:
 		jq = 0
 		ct = 0
-		velocity.y = -JUMP_VELOCITY
+		p.velocity.y = -JUMP_VELOCITY
 	
-	if is_on_floor():
-		if (abs(Input.get_axis("move_right", "move_left")) < 0.1 or abs(velocity.x) > TERMINAL_SPEED): 
-			velocity.x *= FRICTION
-		velocity.x += SPEED * Input.get_axis("move_right", "move_left")
+	if p.is_on_floor():
+		if (abs(Input.get_axis("move_right", "move_left")) < 0.1 or abs(p.velocity.x) > TERMINAL_SPEED) and not just_dashed: 
+			p.velocity.x *= FRICTION
+		p.velocity.x += SPEED * Input.get_axis("move_right", "move_left")
 	else: 
-		if (abs(Input.get_axis("move_right", "move_left")) < 0.1 or abs(velocity.x) > TERMINAL_AIR_SPEED): 
-			velocity.x *= AIR_FRICTION
-		velocity.x += AIR_SPEED * Input.get_axis("move_right", "move_left")
+		if (abs(Input.get_axis("move_right", "move_left")) < 0.1 or abs(p.velocity.x) > TERMINAL_AIR_SPEED) and not just_dashed: 
+			p.velocity.x *= AIR_FRICTION
+		p.velocity.x += AIR_SPEED * Input.get_axis("move_right", "move_left")
 	
-	if is_on_floor():
-		if round(velocity.x) > 0:
+	if p.is_on_floor():
+		if round(p.velocity.x) > 0:
 			sprite.flip_h = flipdefault
-		elif round(velocity.x) < 0:
+		elif round(p.velocity.x) < 0:
 			sprite.flip_h = not flipdefault
 	
-	move_and_slide()
+	p.move_and_slide()
+	

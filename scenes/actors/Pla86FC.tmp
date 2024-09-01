@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://djxlx5ql0nmvt"]
+[gd_scene load_steps=6 format=3 uid="uid://djxlx5ql0nmvt"]
 
 [ext_resource type="Script" path="res://scripts/actor_player/player.gd" id="1_7roir"]
 [ext_resource type="Script" path="res://scripts/actor_player/fsm/def_movement.gd" id="1_w4oo3"]
@@ -8,35 +8,13 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_yvkcx"]
 radius = 54.037
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_keb1g"]
-lifetime_randomness = 1.0
-particle_flag_disable_z = true
-spread = 180.0
-initial_velocity_max = 188.18
-gravity = Vector3(0, 900, 0)
-scale_min = 0.5
-hue_variation_min = -0.08
-hue_variation_max = 0.08
-turbulence_enabled = true
-collision_use_scale = true
-
-[sub_resource type="Gradient" id="Gradient_f0edv"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.707792, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_2o4xs"]
-gradient = SubResource("Gradient_f0edv")
-width = 48
-height = 48
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 0.5)
-metadata/_snap_enabled = true
-
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 3
 script = ExtResource("1_7roir")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3.55556, 3.55556)
+texture = ExtResource("2_7uw8v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -57,18 +35,6 @@ one_shot = true
 
 [node name="JustDashedTimer" type="Timer" parent="."]
 one_shot = true
-
-[node name="DashParticles" type="GPUParticles2D" parent="."]
-emitting = false
-amount = 128
-process_material = SubResource("ParticleProcessMaterial_keb1g")
-texture = SubResource("GradientTexture2D_2o4xs")
-randomness = 0.55
-fixed_fps = 60
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(3.55556, 3.55556)
-texture = ExtResource("2_7uw8v")
 
 [connection signal="state_dash_physics_process" from="." to="StateDash" method="_on_player_state_dash_physics_process"]
 [connection signal="state_default_physics_process" from="." to="StateDefault" method="_on_player_state_default_physics_process"]

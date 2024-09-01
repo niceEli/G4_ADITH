@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://mu0xk8iw44ty"]
+[gd_scene load_steps=14 format=4 uid="uid://mu0xk8iw44ty"]
 
 [ext_resource type="Texture2D" uid="uid://c8vms50b0r8f" path="res://assets/kenney/Pixel Platformer/Tilemap/tilemap_packed.png" id="1_cy6oe"]
 [ext_resource type="PackedScene" uid="uid://djxlx5ql0nmvt" path="res://scenes/actors/Player.tscn" id="1_lnpp3"]
@@ -232,11 +232,11 @@ texture_region_size = Vector2i(18, 18)
 6:7/0 = 0
 6:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, -9, 1, 9, 1, 9, -9)
 6:7/0/physics_layer_0/polygon_0/one_way = true
-6:7/0/physics_layer_0/polygon_0/one_way_margin = 10.0
+6:7/0/physics_layer_0/polygon_0/one_way_margin = 2.0
 7:7/0 = 0
 7:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-9, -9, -9, 1, 9, 1, 9, -9)
 7:7/0/physics_layer_0/polygon_0/one_way = true
-7:7/0/physics_layer_0/polygon_0/one_way_margin = 10.0
+7:7/0/physics_layer_0/polygon_0/one_way_margin = 2.0
 8:7/0 = 0
 9:7/0 = 0
 10:7/0 = 0
@@ -289,6 +289,8 @@ _data = {
 }
 point_count = 14
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hs6qy"]
+
 [node name="TestLevel" type="Node2D"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -329,3 +331,6 @@ curve = SubResource("Curve2D_ev0w7")
 
 [node name="DeathZone" parent="." instance=ExtResource("6_5ayh4")]
 position = Vector2(545, 859)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
+shape = SubResource("WorldBoundaryShape2D_hs6qy")

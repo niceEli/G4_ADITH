@@ -1,16 +1,23 @@
-extends AnimatableBody2D
+extends CharacterBody2D
 
-@onready var hittable_comp: Area2D = $HittableComp
+var og_pos: Vector2
+func _ready() -> void:
+	og_pos = position
+	
+func _process(delta: float) -> void:
+	position = og_pos
 
 @export var br_comp: breakable_comp
 
 func do_destroy() -> void:
 	br_comp.destroy()
-	hittable_comp.queue_free()
 
-
-func _on_hittable_comp_body_shape_entered(_body_rid: RID, body: Node2D, _body_shape_index: int, _local_shape_index: int) -> void:
-	if body.velocity:
-		if body.velocity.y < 0:
+func _physics_process(delta: float) -> void:
+	velocity = Vector2.ZERO
+	move_and_slide()
+	velocity = Vector2.ZERO
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		if collision.get_angle() == 0:
 			do_destroy() 
-			body.velocity.y = 0
+			collision.get_collider().velocity.y = 0

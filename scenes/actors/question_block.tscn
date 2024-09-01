@@ -1,18 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://xusprehk6hu8"]
+[gd_scene load_steps=6 format=3 uid="uid://xusprehk6hu8"]
 
 [ext_resource type="Texture2D" uid="uid://df22puqd6hlk3" path="res://assets/kenney/Pixel Platformer/Tiles/tile_0010.png" id="1_6y6s2"]
 [ext_resource type="Script" path="res://scripts/question_block.gd" id="1_vtv16"]
-[ext_resource type="PackedScene" uid="uid://ds5gu14sqd7r5" path="res://scenes/components/hittable_comp.tscn" id="2_y7xe4"]
 [ext_resource type="PackedScene" uid="uid://do5of8sihnloy" path="res://scenes/components/change_sprite_comp.tscn" id="3_vkth1"]
 [ext_resource type="Texture2D" uid="uid://b8x3fbffbheoh" path="res://assets/kenney/Pixel Platformer/Tiles/tile_0029.png" id="4_x8q7w"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_n38ky"]
-size = Vector2(64, 10)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b3rx4"]
-size = Vector2(72, 68)
+size = Vector2(72, 72)
 
-[node name="QuestionBlock" type="AnimatableBody2D" node_paths=PackedStringArray("spr_comp")]
+[node name="QuestionBlock" type="CharacterBody2D" node_paths=PackedStringArray("spr_comp")]
+collision_mask = 2
+motion_mode = 1
+platform_floor_layers = 4294967293
 script = ExtResource("1_vtv16")
 spr_comp = NodePath("ChangeSpriteComp")
 
@@ -24,14 +23,5 @@ texture = ExtResource("1_6y6s2")
 sprite = ExtResource("4_x8q7w")
 sprite2DComp = NodePath("../Image")
 
-[node name="HittableComp" parent="." instance=ExtResource("2_y7xe4")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HittableComp"]
-position = Vector2(0, 40)
-shape = SubResource("RectangleShape2D_n38ky")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_b3rx4")
-
-[connection signal="body_shape_entered" from="HittableComp" to="." method="_on_hittable_comp_body_shape_entered"]

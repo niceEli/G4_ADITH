@@ -1,16 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bx4osd4oqsf6j"]
+[gd_scene load_steps=2 format=3 uid="uid://bx4osd4oqsf6j"]
 
 [ext_resource type="Script" path="res://scripts/death_zone.gd" id="1_tmv16"]
-[ext_resource type="PackedScene" uid="uid://ds5gu14sqd7r5" path="res://scenes/components/hittable_comp.tscn" id="2_h4spg"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_40fml"]
-
-[node name="DeathZone" type="Node2D"]
+[node name="DeathZone" type="Area2D"]
 script = ExtResource("1_tmv16")
 
-[node name="HittableComp" parent="." instance=ExtResource("2_h4spg")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HittableComp"]
-shape = SubResource("WorldBoundaryShape2D_40fml")
-
-[connection signal="body_shape_entered" from="HittableComp" to="." method="_on_hittable_comp_body_shape_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
