@@ -11,6 +11,10 @@ extends CharacterBody2D
 @export_range(0.00,1.00) var FRICTION: float = 0.8
 @export_range(0.00,1.00) var AIR_FRICTION: float = 0.98
 
+@export var sprite: Sprite2D
+
+@export var flipdefault: bool = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -31,5 +35,11 @@ func _physics_process(delta: float) -> void:
 		if (abs(Input.get_axis("move_right", "move_left")) < 0.1 or abs(velocity.x) > TERMINAL_AIR_SPEED): 
 			velocity.x *= AIR_FRICTION
 		velocity.x += AIR_SPEED * Input.get_axis("move_right", "move_left")
+	
+	if is_on_floor():
+		if round(velocity.x) > 0:
+			sprite.flip_h = flipdefault
+		elif round(velocity.x) < 0:
+			sprite.flip_h = not flipdefault
 	
 	move_and_slide()
