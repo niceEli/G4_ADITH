@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://djffy1rxxq0x2"]
+
+[ext_resource type="Texture2D" uid="uid://c11e2gvxnvs6y" path="res://assets/kenney/Pixel Platformer/Tiles/tile_0008.png" id="1_23kih"]
+[ext_resource type="Script" path="res://scripts/brick_break_particles.gd" id="2_88ah2"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u667b"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 48.0
+angle_min = -720.0
+angle_max = 720.0
+spread = 101.629
+initial_velocity_min = -100.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 98, 0)
+linear_accel_min = 22.58
+linear_accel_max = 22.58
+radial_accel_min = -100.0
+radial_accel_max = 100.0
+scale_min = 3.0
+scale_max = 3.0
+
+[node name="BrickBreakParticles" type="GPUParticles2D"]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_u667b")
+texture = ExtResource("1_23kih")
+lifetime = 20.0
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+script = ExtResource("2_88ah2")
